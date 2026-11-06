@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HardHat — Загрузка</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #f8fafc;
+        }
+
+        /* Фоновая картинка с затемнением */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4000/ss_af060d0a9aeb6598e154c9704ce250b0e63b2266.1920x1080.jpg?t=1776868682');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+            animation: slowZoom 30s ease-in-out infinite alternate;
+        }
+
+        /* Затемняющий градиент поверх картинки, чтобы текст читался */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(49, 46, 129, 0.72), rgba(109, 40, 217, 0.65));
+            z-index: -1;
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1); }
+            to   { transform: scale(1.08); }
+        }
+
+        /* Надпись HardHat в левом верхнем углу */
+        .brand {
+            position: fixed;
+            top: 24px;
+            left: 32px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+            z-index: 5;
+            user-select: none;
+        }
+
+        .brand span {
+            color: #a78bfa;
+        }
+
+        /* Центральный текст */
+        .center-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #fff;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+            padding: 0 20px;
+            max-width: 90vw;
+            animation: pulseText 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.65; }
+        }
+
+        /* Блок загрузки внизу по центру */
+        .loader-wrap {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            z-index: 5;
+        }
+
+        /* Анимация загрузки — кольцо с тремя точками */
+        .loader {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #a78bfa;
+            border-right-color: #8b5cf6;
+            animation: spin 1.1s linear infinite;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .loader::after {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.08);
+            border-bottom-color: #c4b5fd;
+            animation: spin 1.6s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Текст под анимацией */
+        .loader-text {
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.75);
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            animation: blink 1.8s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.85; }
+            50%      { opacity: 0.4; }
+        }
+
+        /* Чёрный "шторки" по краям для киношности (можно удалить) */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+            z-index: 1;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 600px) {
+            .brand { font-size: 1.2rem; top: 16px; left: 18px; }
+            .loader-wrap { bottom: 40px; }
+            .loader { width: 56px; height: 56px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Фон -->
+    <div class="bg"></div>
+    <div class="bg-overlay"></div>
+    <div class="vignette"></div>
+
+    <!-- Надпись сверху слева -->
+    <div class="brand">Hard<span>Hat</span></div>
+
+    <!-- Центральный текст -->
+    <div class="center-text">Подождите, идёт загрузка сервера</div>
+
+    <!-- Загрузка внизу -->
+    <div class="loader-wrap">
+        <div class="loader"></div>
+        <div class="loader-text">Загрузка файлов...</div>
+    </div>
+
+</body>
+</html>
